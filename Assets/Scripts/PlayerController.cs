@@ -3,31 +3,59 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    InputAction moveAction, leftFootUp;
-    [SerializeField] Transform hips, footLeft, footRight;
-    [SerializeField] FootController footLeftController, footRightController;
-    [SerializeField] float moveVelocity, upVelocity;
-    Vector3 initialHipsPosition;
+    [SerializeField] Animator animator;
+    [SerializeField] int playerID;
+    [SerializeField] Transform transforEnemy;
+
+    bool lookAtEnemey;
 
     void Start()
     {
-        moveAction = InputSystem.actions.FindAction("Move");
-        leftFootUp = InputSystem.actions.FindAction("leftFootUp");
-        initialHipsPosition = hips.position;
+        // moveAction = InputSystem.actions.FindAction("Move");
+        // leftFootUp = InputSystem.actions.FindAction("leftFootUp");
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        Vector2 moveValue = moveAction.ReadValue<Vector2>();
-        float leftFootUpValue = leftFootUp.ReadValue<float>();
-        
-        Vector3 middleFootPos = Vector3.Lerp(footLeft.transform.position, footRight.transform.position, 0.5f);
-        hips.position = new Vector3(middleFootPos.x, initialHipsPosition.y, middleFootPos.z);
-        
-        footLeftController.move(moveValue.x * moveVelocity, leftFootUpValue * upVelocity, moveValue.y * moveVelocity);
-        if(leftFootUpValue > 0){
-            // footLeft.position += new Vector3(moveValue.x * moveVelocity, leftFootUpValue * upVelocity, moveValue.y * moveVelocity);
+        if(playerID == 1){
+            if(Input.GetKeyDown(KeyCode.A)){
+                animator.SetTrigger("Kick");
+                lookAtEnemey = false;
+            }
+
+            if(Input.GetKeyDown(KeyCode.B)){
+                animator.SetTrigger("BackKick");
+                lookAtEnemey = false;
+            }
+
+            if(Input.GetKeyDown(KeyCode.LeftArrow)){
+                animator.SetTrigger("JumpLeft");
+            }
+
+            if(Input.GetKeyDown(KeyCode.RightArrow)){
+                animator.SetTrigger("JumpRight");
+            }
+
+            if(Input.GetKeyDown(KeyCode.UpArrow)){
+                animator.SetTrigger("JumpFront");
+            }
         }
-        // hips.position = new Vector3(initialHipsPosition.x + (moveValue.x * hipsOffsetScale), initialHipsPosition.y, initialHipsPosition.z + (moveValue.y * hipsOffsetScale));
+
+        if(lookAtEnemey){
+            transform.LookAt(transforEnemy);
+        }
     }
+
+    /// <summary>
+    /// trigger this at the end of any kick
+    /// </summary>
+
+    public void enableLookAt(){
+        lookAtEnemey = true;
+    }
+
+    // private void OnCollisionEnter(Collision other) {
+    //     Debug.Log("name = " + othe.name);
+        
+    // }
 }

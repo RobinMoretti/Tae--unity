@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-using Unity.Cinemachine;
+using Cinemachine;
 using EasyButtons;
 using Unity.Mathematics;
 
@@ -9,11 +9,12 @@ public class CameraShakingController : MonoBehaviour
     Vector2 initialShakingFourchette;
 
     float shakeValue;
+    CinemachineVirtualCamera cinemachineVirtualCamera;
     CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin;
-
     private void Start() {
-        cinemachineBasicMultiChannelPerlin = GetComponent<CinemachineBasicMultiChannelPerlin>();
-        initialShakingFourchette = new Vector2(cinemachineBasicMultiChannelPerlin.AmplitudeGain, cinemachineBasicMultiChannelPerlin.FrequencyGain);
+        cinemachineVirtualCamera = GetComponent<CinemachineVirtualCamera>();
+        cinemachineBasicMultiChannelPerlin = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        initialShakingFourchette = new Vector2(cinemachineBasicMultiChannelPerlin.m_AmplitudeGain, cinemachineBasicMultiChannelPerlin.m_FrequencyGain);
     }
 
     float amplitudeGainTarget;
@@ -43,8 +44,8 @@ public class CameraShakingController : MonoBehaviour
 
         while (elapsedTime < waitTime)
         {
-            cinemachineBasicMultiChannelPerlin.AmplitudeGain = Mathf.Lerp(initialShakingFourchette.x, amplitudeGainTarget, (elapsedTime / waitTime));
-            cinemachineBasicMultiChannelPerlin.FrequencyGain = Mathf.Lerp(initialShakingFourchette.y, frequencyGainTarget, (elapsedTime / waitTime));
+            cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = Mathf.Lerp(initialShakingFourchette.x, amplitudeGainTarget, (elapsedTime / waitTime));
+            cinemachineBasicMultiChannelPerlin.m_FrequencyGain = Mathf.Lerp(initialShakingFourchette.y, frequencyGainTarget, (elapsedTime / waitTime));
             elapsedTime += Time.deltaTime;
 
             // Yield here
@@ -58,16 +59,16 @@ public class CameraShakingController : MonoBehaviour
 
         while (elapsedTime < waitTime)
         {
-            cinemachineBasicMultiChannelPerlin.AmplitudeGain = Mathf.Lerp(amplitudeGainTarget, initialShakingFourchette.x, (elapsedTime / waitTime));
-            cinemachineBasicMultiChannelPerlin.FrequencyGain = Mathf.Lerp(frequencyGainTarget, initialShakingFourchette.y, (elapsedTime / waitTime));
+            cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = Mathf.Lerp(amplitudeGainTarget, initialShakingFourchette.x, (elapsedTime / waitTime));
+            cinemachineBasicMultiChannelPerlin.m_FrequencyGain = Mathf.Lerp(frequencyGainTarget, initialShakingFourchette.y, (elapsedTime / waitTime));
             elapsedTime += Time.deltaTime;
 
             // Yield here
             yield return null;
         }  
 
-        cinemachineBasicMultiChannelPerlin.AmplitudeGain = 0.3f;
-        cinemachineBasicMultiChannelPerlin.FrequencyGain = 1f;
+        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0.3f;
+        cinemachineBasicMultiChannelPerlin.m_FrequencyGain = 1f;
         isShaking = false;
         // // Make sure we got there
         // transform.position = Gotoposition;

@@ -561,7 +561,6 @@ Material:
     - _ViewShift: {r: 0, g: 0, b: 0, a: 1}
     - emissive: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!114 &1126623534210047217
 MonoBehaviour:
   m_ObjectHideFlags: 11
