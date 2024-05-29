@@ -77,8 +77,14 @@ public class PlayerController : MonoBehaviour
                 animator.SetTrigger("JumpRight");
             }
 
-            if(Input.GetKeyDown(KeyCode.UpArrow)){
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
                 animator.SetTrigger("JumpFront");
+            }
+
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                animator.SetTrigger("JumpBack");
             }
         }
 
@@ -108,11 +114,9 @@ public class PlayerController : MonoBehaviour
     {
         while (isRunning && serialPort != null && serialPort.IsOpen)
         {
-            print("message = ");
             try
             {
                 string message = serialPort.ReadLine();
-                print("message = " + message);
                 lock (lockObject)
                 {
                     receivedMessage = message;

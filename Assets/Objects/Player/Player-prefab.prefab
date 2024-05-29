@@ -99,8 +99,8 @@ Rigidbody:
   m_GameObject: {fileID: 165358322227060471}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 5
-  m_AngularDrag: 1
+  m_Drag: 6
+  m_AngularDrag: 2
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -1259,8 +1259,8 @@ Rigidbody:
   m_GameObject: {fileID: 4471960827387256392}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 5
-  m_AngularDrag: 1
+  m_Drag: 6
+  m_AngularDrag: 2
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -1509,8 +1509,8 @@ Rigidbody:
   m_GameObject: {fileID: 6179063907495211182}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 5
-  m_AngularDrag: 1
+  m_Drag: 6
+  m_AngularDrag: 2
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -2245,8 +2245,8 @@ Rigidbody:
   m_GameObject: {fileID: 8806151339611993487}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 5
-  m_AngularDrag: 1
+  m_Drag: 6
+  m_AngularDrag: 2
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -12192,6 +12192,8 @@ MonoBehaviour:
   animator: {fileID: 2063328649959653903}
   playerID: 1
   transforEnemy: {fileID: 0}
+  portName: 
+  baudRate: 9600
 --- !u!54 &4314071839530384980
 Rigidbody:
   m_ObjectHideFlags: 0
