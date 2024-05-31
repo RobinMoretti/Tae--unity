@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.ComTypes;
 using System;
 using System.Threading;
 using UnityEngine.UI;
+using System.Security.Cryptography;
 
 public class PlayerController : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject enduranceUIStep;
     float enduranceImageParentWidth;
 
-    bool lookAtEnemey;
+    bool lookAtEnemey = true;
     SerialPort dataStream;
     private Thread portReadingThread;
 
@@ -33,6 +34,8 @@ public class PlayerController : MonoBehaviour
     // Adjust the port name and baud rate to match your Arduino settings
     public string portName; 
     public int baudRate = 9600;
+
+    [SerializeField] GameController gameController;
 
     /*    serialport*/
     void Start()
@@ -109,6 +112,11 @@ public class PlayerController : MonoBehaviour
         if(lookAtEnemey){
             transform.LookAt(transforEnemy);
         }
+    }
+
+    void saluToStartGame()
+    {
+
     }
 
     void playCard(string cardId){
@@ -189,5 +197,19 @@ public class PlayerController : MonoBehaviour
         {
             print("Error opening serial port: " + e.Message);
         }
+    }
+/*
+    public void pauseAnimation()
+    {
+        animator.speed = 0;
+    }
+    public void unpauseAnimation()
+    {
+        animator.speed = 1;
+    }*/
+
+    void toggleReadyToPlay()
+    {
+/*        GameController*/
     }
 }

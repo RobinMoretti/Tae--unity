@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameCOntroller : MonoBehaviour
+public class GameController : MonoBehaviour
 {
     int scorePlayer1, scorePlayer2;
     
