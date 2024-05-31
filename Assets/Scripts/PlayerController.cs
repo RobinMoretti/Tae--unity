@@ -43,6 +43,8 @@ public class PlayerController : MonoBehaviour
 
     List<string> usedCards;
 
+    public bool gameStart
+
     /*    serialport*/
     void Start()
     {
@@ -128,6 +130,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    float scoreToAdd = 0;
 
     void playCard(string cardId){
         string action = cardsManager.getCardAction(cardId);
@@ -145,6 +148,7 @@ public class PlayerController : MonoBehaviour
                 {
                     animator.SetTrigger(action);
                     endurance -= 2;
+                    scoreToAdd = 0;
                 }
             }
             if (action == "JumpRight")
@@ -153,6 +157,7 @@ public class PlayerController : MonoBehaviour
                 {
                     animator.SetTrigger(action);
                     endurance -= 2;
+                    scoreToAdd = 0;
                 }
             }
             if (action == "JumpFront")
@@ -161,6 +166,7 @@ public class PlayerController : MonoBehaviour
                 {
                     animator.SetTrigger(action);
                     endurance -= 2;
+                    scoreToAdd = 0;
                 }
             }
             if (action == "JumpBack")
@@ -169,54 +175,61 @@ public class PlayerController : MonoBehaviour
                 {
                     animator.SetTrigger(action);
                     endurance -= 2;
+                    scoreToAdd = 0;
                 }
             }
             if (action == "Salu")
             {
-                if (endurance > 2)
+                if (endurance > 5)
                 {
                     animator.SetTrigger(action);
-                    endurance -= 2;
+                    endurance -= 5;
+                    scoreToAdd = 0;
                 }
             }
             if (action == "FrontKick")
             {
-                if (endurance > 2)
+                if (endurance > 3)
                 {
                     animator.SetTrigger(action);
-                    endurance -= 2;
+                    endurance -= 3;
+                    scoreToAdd = 400;
                 }
             }
             if (action == "SideKick")
             {
-                if (endurance > 2)
+                if (endurance > 3)
                 {
                     animator.SetTrigger(action);
-                    endurance -= 2;
+                    endurance -= 3;
+                    scoreToAdd = 400;
                 }
             }
             if (action == "Combo1")
             {
-                if (endurance > 2)
+                if (endurance > 5)
                 {
                     animator.SetTrigger(action);
-                    endurance -= 2;
+                    endurance -= 5;
+                    scoreToAdd = 600;
                 }
             }
             if (action == "RunAndKick")
             {
-                if (endurance > 2)
+                if (endurance > 5)
                 {
                     animator.SetTrigger(action);
-                    endurance -= 2;
+                    endurance -= 5;
+                    scoreToAdd = 1000;
                 }
             }
             if (action == "BackKick")
             {
-                if (endurance > 2)
+                if (endurance > 3)
                 {
                     animator.SetTrigger(action);
-                    endurance -= 2;
+                    endurance -= 3;
+                    scoreToAdd = 600;
                 }
             }
         }
@@ -232,6 +245,7 @@ public class PlayerController : MonoBehaviour
 
     public void enableLookAt(){
         lookAtEnemey = true;
+        scoreToAdd = 0;
     }
 
     private void ReadSerial()
