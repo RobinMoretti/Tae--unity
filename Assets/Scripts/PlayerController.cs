@@ -5,6 +5,8 @@ using System.IO;
 using System.Runtime.InteropServices.ComTypes;
 using System;
 using System.Threading;
+using UnityEngine.UI;
+using System.Security.Cryptography;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,7 +14,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] int playerID;
     [SerializeField] Transform transforEnemy;
 
-    bool lookAtEnemey;
+    [SerializeField] float endurance = 0;
+    [SerializeField] float enduranceIncreaseRate = 1f;
+    [SerializeField] float enduranceMaxValue = 5f;
+    [SerializeField] RectTransform enduranceImage, enduranceImageParent;
+    [SerializeField] GameObject enduranceUIStep;
+    float enduranceImageParentWidth;
+
+    bool lookAtEnemey = true;
     SerialPort dataStream;
     private Thread portReadingThread;
 
@@ -26,33 +35,45 @@ public class PlayerController : MonoBehaviour
     public string portName; 
     public int baudRate = 9600;
 
+    [SerializeField] GameController gameController;
+
     /*    serialport*/
     void Start()
     {
         OpenSerialPort();
+        enduranceImageParentWidth = enduranceImageParent.sizeDelta.x;
+
+        Debug.Log("enduranceMaxValue = " + enduranceMaxValue );
+        
+        for (int i = 1; i < enduranceMaxValue; i++)
+        {
+            Debug.Log("i = " + i );
+        
+            GameObject step = Instantiate(enduranceUIStep);
+            step.transform.parent = enduranceImageParent.transform;
+            RectTransform rect = step.GetComponent<RectTransform>();
+            rect.anchoredPosition = new Vector2((enduranceImageParent.sizeDelta.x/enduranceMaxValue) * i,0); 
+            // rect.sizeDelta = new Vector2(rect.sizeDelta.x, enduranceImageParent.sizeDelta.y);
+        }
     }
 
 
     private void Update()
     {
+        if(endurance < enduranceMaxValue){
+            endurance += enduranceIncreaseRate * Time.deltaTime;
+        }
+        else{
+            endurance = enduranceMaxValue;
+        }
+        updateEnduranceUI();
+
         lock (lockObject)
         {
             if (receivedMessage != null)
             {
-                if(receivedMessage == "0x40x350x920xEB0x780x00x0")
-                {
-                    animator.SetTrigger("Kick");
-                }
-                else if (receivedMessage == "0xA30x6A0x760x35")
-                {
-                    animator.SetTrigger("JumpFront");
-                }
-                else if (receivedMessage == "0x330x2E0x120x35")
-                {
-                    animator.SetTrigger("BackKick");
-                }
+                playCard(receivedMessage);              
 
-                Debug.Log("Received: " + receivedMessage);
                 receivedMessage = null;
             }
         }
@@ -93,7 +114,38 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void saluToStartGame()
+    {
 
+    }
+
+    void playCard(string cardId){
+        if(cardId == "0x40x350x920xEB0x780x00x0")
+        {
+            if(endurance > 2){
+                endurance -= 2;
+                animator.SetTrigger("Kick");
+            }
+        }
+        else if (cardId == "0xA30x6A0x760x35")
+        {
+            if(endurance > 1){
+                endurance -= 1;
+                animator.SetTrigger("JumpFront");
+            }
+        }
+        else if (cardId == "0x330x2E0x120x35")
+        {
+            if(endurance > 3){
+                endurance -= 3;
+                animator.SetTrigger("BackKick");
+            }
+        }
+    }
+
+    void updateEnduranceUI(){
+        enduranceImage.sizeDelta = new Vector2(endurance * enduranceImageParentWidth / enduranceMaxValue, enduranceImage.sizeDelta.y);
+    }
 
     /// <summary>
     /// trigger this at the end of any kick
@@ -102,13 +154,6 @@ public class PlayerController : MonoBehaviour
     public void enableLookAt(){
         lookAtEnemey = true;
     }
-
-    // private void OnCollisionEnter(Collision other) {
-    //     Debug.Log("name = " + othe.name);
-
-    // }
-
-
 
     private void ReadSerial()
     {
@@ -140,10 +185,9 @@ public class PlayerController : MonoBehaviour
 
     private void OpenSerialPort()
     {
-        serialPort = new SerialPort(portName, baudRate);
-
         try
         {
+            serialPort = new SerialPort(portName, baudRate);
             serialPort.Open();
             isRunning = true;
             serialThread = new Thread(ReadSerial);
@@ -151,7 +195,21 @@ public class PlayerController : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.LogError("Error opening serial port: " + e.Message);
+            print("Error opening serial port: " + e.Message);
         }
+    }
+/*
+    public void pauseAnimation()
+    {
+        animator.speed = 0;
+    }
+    public void unpauseAnimation()
+    {
+        animator.speed = 1;
+    }*/
+
+    void toggleReadyToPlay()
+    {
+/*        GameController*/
     }
 }
