@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18387677, g: 0.22898692, b: 0.30290073, a: 1}
+  m_IndirectSpecularColor: {r: 0.18387657, g: 0.22898662, b: 0.30290014, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2558,7 +2558,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7845162921907400633, guid: 2df4504db82ebce4cb3445fdf1331abf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1679911370}
   m_SourcePrefab: {fileID: 100100000, guid: 2df4504db82ebce4cb3445fdf1331abf, type: 3}
 --- !u!1 &989488479
 GameObject:
@@ -2807,6 +2810,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1263664854}
   - component: {fileID: 1263664853}
+  - component: {fileID: 1263664855}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2841,6 +2845,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1263664855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1263664852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4def126e5e5687449bf25da016de1687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1273089278 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7463677001219142915, guid: 2df4504db82ebce4cb3445fdf1331abf, type: 3}
@@ -2872,6 +2888,40 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.18703106, y: 0.0029921564, z: 0.033807095}
   m_Center: {x: 0.08351552, y: -0.0085039195, z: -0.0069035483}
+--- !u!1 &1587046586 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7845162921907400633, guid: 2df4504db82ebce4cb3445fdf1331abf, type: 3}
+  m_PrefabInstance: {fileID: 7043517028991077712}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1587046591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1587046586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4def126e5e5687449bf25da016de1687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1679911365 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7845162921907400633, guid: 2df4504db82ebce4cb3445fdf1331abf, type: 3}
+  m_PrefabInstance: {fileID: 938257954}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1679911370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1679911365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4def126e5e5687449bf25da016de1687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1694123731
 GameObject:
   m_ObjectHideFlags: 0
@@ -3158,6 +3208,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 865245320931438000, guid: 2df4504db82ebce4cb3445fdf1331abf, type: 3}
+      propertyPath: portName
+      value: COM12
+      objectReference: {fileID: 0}
+    - target: {fileID: 865245320931438000, guid: 2df4504db82ebce4cb3445fdf1331abf, type: 3}
       propertyPath: transforEnemy
       value: 
       objectReference: {fileID: 1273089278}
@@ -3252,7 +3306,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7845162921907400633, guid: 2df4504db82ebce4cb3445fdf1331abf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1587046591}
   m_SourcePrefab: {fileID: 100100000, guid: 2df4504db82ebce4cb3445fdf1331abf, type: 3}
 --- !u!1001 &9168935506986924592
 PrefabInstance:

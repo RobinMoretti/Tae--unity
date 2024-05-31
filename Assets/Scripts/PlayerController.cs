@@ -7,6 +7,8 @@ using System;
 using System.Threading;
 using UnityEngine.UI;
 using System.Security.Cryptography;
+using NUnit.Framework;
+using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
@@ -37,9 +39,16 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] GameController gameController;
 
+    [SerializeField] CardsManager cardsManager;
+
+    List<string> usedCards;
+
     /*    serialport*/
     void Start()
     {
+        usedCards = new List<string>();
+        cardsManager = GetComponent<CardsManager>();
+
         OpenSerialPort();
         enduranceImageParentWidth = enduranceImageParent.sizeDelta.x;
 
@@ -119,26 +128,96 @@ public class PlayerController : MonoBehaviour
 
     }
 
+
     void playCard(string cardId){
-        if(cardId == "0x40x350x920xEB0x780x00x0")
+        string action = cardsManager.getCardAction(cardId);
+
+        if (usedCards.Contains(cardId))
         {
-            if(endurance > 2){
-                endurance -= 2;
-                animator.SetTrigger("Kick");
-            }
+            return;
         }
-        else if (cardId == "0xA30x6A0x760x35")
+
+        if (action != "false")
         {
-            if(endurance > 1){
-                endurance -= 1;
-                animator.SetTrigger("JumpFront");
+            if (action == "JumpLeft")
+            {
+                if (endurance > 2)
+                {
+                    animator.SetTrigger(action);
+                    endurance -= 2;
+                }
             }
-        }
-        else if (cardId == "0x330x2E0x120x35")
-        {
-            if(endurance > 3){
-                endurance -= 3;
-                animator.SetTrigger("BackKick");
+            if (action == "JumpRight")
+            {
+                if (endurance > 2)
+                {
+                    animator.SetTrigger(action);
+                    endurance -= 2;
+                }
+            }
+            if (action == "JumpFront")
+            {
+                if (endurance > 2)
+                {
+                    animator.SetTrigger(action);
+                    endurance -= 2;
+                }
+            }
+            if (action == "JumpBack")
+            {
+                if (endurance > 2)
+                {
+                    animator.SetTrigger(action);
+                    endurance -= 2;
+                }
+            }
+            if (action == "Salu")
+            {
+                if (endurance > 2)
+                {
+                    animator.SetTrigger(action);
+                    endurance -= 2;
+                }
+            }
+            if (action == "FrontKick")
+            {
+                if (endurance > 2)
+                {
+                    animator.SetTrigger(action);
+                    endurance -= 2;
+                }
+            }
+            if (action == "SideKick")
+            {
+                if (endurance > 2)
+                {
+                    animator.SetTrigger(action);
+                    endurance -= 2;
+                }
+            }
+            if (action == "Combo1")
+            {
+                if (endurance > 2)
+                {
+                    animator.SetTrigger(action);
+                    endurance -= 2;
+                }
+            }
+            if (action == "RunAndKick")
+            {
+                if (endurance > 2)
+                {
+                    animator.SetTrigger(action);
+                    endurance -= 2;
+                }
+            }
+            if (action == "BackKick")
+            {
+                if (endurance > 2)
+                {
+                    animator.SetTrigger(action);
+                    endurance -= 2;
+                }
             }
         }
     }
