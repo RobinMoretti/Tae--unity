@@ -9,6 +9,8 @@ using UnityEngine.UI;
 using System.Security.Cryptography;
 using NUnit.Framework;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -21,6 +23,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float enduranceMaxValue = 5f;
     [SerializeField] RectTransform enduranceImage, enduranceImageParent;
     [SerializeField] GameObject enduranceUIStep;
+    [SerializeField] TMP_Text scoreTXT;
     float enduranceImageParentWidth;
 
     bool lookAtEnemey = true;
@@ -42,8 +45,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] CardsManager cardsManager;
 
     List<string> usedCards;
+    public float score;
+    public bool ready;
 
-    public bool gameStart
+    float scoreToAdd = 0;
 
     /*    serialport*/
     void Start()
@@ -58,39 +63,52 @@ public class PlayerController : MonoBehaviour
         
         for (int i = 1; i < enduranceMaxValue; i++)
         {
-            Debug.Log("i = " + i );
-        
             GameObject step = Instantiate(enduranceUIStep);
             step.transform.parent = enduranceImageParent.transform;
             RectTransform rect = step.GetComponent<RectTransform>();
             rect.anchoredPosition = new Vector2((enduranceImageParent.sizeDelta.x/enduranceMaxValue) * i,0); 
             // rect.sizeDelta = new Vector2(rect.sizeDelta.x, enduranceImageParent.sizeDelta.y);
         }
+        if (playerID == 2){
+            score += 600;
+        }
     }
 
 
     private void Update()
     {
+        if (playerID == 2){
+            if(Input.GetKeyDown(KeyCode.E)){
+                if (endurance >= 5)
+                {
+                    animator.SetTrigger("Salu");
+                    endurance -= 5;
+                    scoreToAdd = 0;
+                    ready = true;
+                    gameController.play();
+                }
+            }
+        }
         if(endurance < enduranceMaxValue){
             endurance += enduranceIncreaseRate * Time.deltaTime;
         }
         else{
             endurance = enduranceMaxValue;
         }
+
         updateEnduranceUI();
 
-        lock (lockObject)
-        {
-            if (receivedMessage != null)
-            {
-                playCard(receivedMessage);              
-
-                receivedMessage = null;
-            }
-        }
-
-
         if (playerID == 1){
+            if(Input.GetKeyDown(KeyCode.O)){
+                if (endurance >= 5)
+                {
+                    animator.SetTrigger("Salu");
+                    endurance -= 5;
+                    scoreToAdd = 0;
+                    ready = true;
+                    gameController.play();
+                }
+            }
             if(Input.GetKeyDown(KeyCode.A)){
                 animator.SetTrigger("Kick");
                 lookAtEnemey = false;
@@ -120,17 +138,29 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        lock (lockObject)
+        {
+            if (receivedMessage != null)
+            {
+                playCard(receivedMessage);              
+
+                receivedMessage = null;
+            }
+        }
+
         if(lookAtEnemey){
             transform.LookAt(transforEnemy);
         }
     }
-
-    void saluToStartGame()
-    {
-
+    
+    public void addScore(){
+        score += scoreToAdd;
+        scoreTXT.text = score.ToString();
     }
 
-    float scoreToAdd = 0;
+    void OnCollisionEnter(Collision other){
+        print("other.name : " + other.gameObject.name);
+    }
 
     void playCard(string cardId){
         string action = cardsManager.getCardAction(cardId);
@@ -142,9 +172,28 @@ public class PlayerController : MonoBehaviour
 
         if (action != "false")
         {
+
+            lookAtEnemey = false;
+
+            if (action == "Salu")
+            {
+                if (endurance >= 5)
+                {
+                    animator.SetTrigger(action);
+                    endurance -= 5;
+                    scoreToAdd = 0;
+                    ready = true;
+                    gameController.play();
+                }
+            }
+
+            if(!gameController.gameStarted || gameController.finished){
+                return;
+            }
+
             if (action == "JumpLeft")
             {
-                if (endurance > 2)
+                if (endurance >= 2)
                 {
                     animator.SetTrigger(action);
                     endurance -= 2;
@@ -153,7 +202,7 @@ public class PlayerController : MonoBehaviour
             }
             if (action == "JumpRight")
             {
-                if (endurance > 2)
+                if (endurance >= 2)
                 {
                     animator.SetTrigger(action);
                     endurance -= 2;
@@ -162,7 +211,7 @@ public class PlayerController : MonoBehaviour
             }
             if (action == "JumpFront")
             {
-                if (endurance > 2)
+                if (endurance >= 2)
                 {
                     animator.SetTrigger(action);
                     endurance -= 2;
@@ -171,25 +220,16 @@ public class PlayerController : MonoBehaviour
             }
             if (action == "JumpBack")
             {
-                if (endurance > 2)
+                if (endurance >= 2)
                 {
                     animator.SetTrigger(action);
                     endurance -= 2;
                     scoreToAdd = 0;
                 }
             }
-            if (action == "Salu")
-            {
-                if (endurance > 5)
-                {
-                    animator.SetTrigger(action);
-                    endurance -= 5;
-                    scoreToAdd = 0;
-                }
-            }
             if (action == "FrontKick")
             {
-                if (endurance > 3)
+                if (endurance >= 3)
                 {
                     animator.SetTrigger(action);
                     endurance -= 3;
@@ -198,7 +238,7 @@ public class PlayerController : MonoBehaviour
             }
             if (action == "SideKick")
             {
-                if (endurance > 3)
+                if (endurance >= 3)
                 {
                     animator.SetTrigger(action);
                     endurance -= 3;
@@ -207,7 +247,7 @@ public class PlayerController : MonoBehaviour
             }
             if (action == "Combo1")
             {
-                if (endurance > 5)
+                if (endurance >= 5)
                 {
                     animator.SetTrigger(action);
                     endurance -= 5;
@@ -216,7 +256,7 @@ public class PlayerController : MonoBehaviour
             }
             if (action == "RunAndKick")
             {
-                if (endurance > 5)
+                if (endurance >= 5)
                 {
                     animator.SetTrigger(action);
                     endurance -= 5;
@@ -225,7 +265,7 @@ public class PlayerController : MonoBehaviour
             }
             if (action == "BackKick")
             {
-                if (endurance > 3)
+                if (endurance >= 3)
                 {
                     animator.SetTrigger(action);
                     endurance -= 3;
