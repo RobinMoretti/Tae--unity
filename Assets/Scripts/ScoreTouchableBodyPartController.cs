@@ -1,23 +1,26 @@
 using Unity.Mathematics;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class ScoreTouchableBodyPartController : MonoBehaviour
 {
     [SerializeField] PlayerController playerControllerParent;
 
-    int timer = 0;
+    [SerializeField] int timer = 0;
+
+    private void Start()
+    {
+        playerControllerParent = GetComponentInParent<PlayerController>();
+    }
 
     void Update(){
-        timer ++;
+        if(timer < 40) timer++;
     }
 
     private void OnCollisionEnter(Collision other) {
-        print(other.gameObject.name);
         
-        if(timer < 30) return;
+        if(timer < 10) return;
 
-        if(other.gameObject.name == "Head" || other.gameObject.name == "Bust"){ 
+        if (other.gameObject.name == "Head" || other.gameObject.name == "Buste"){ 
             playerControllerParent.addScore();
             timer = 0;
         }

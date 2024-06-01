@@ -13,7 +13,7 @@ public class RigidBodyTriggerCameraShaking : MonoBehaviour
         Vector3 impactVelocity = other.relativeVelocity;
 
         if(impactVelocity.magnitude > 2){
-            targetCamera.shake(math.remap(1, 10, 0, 1, impactVelocity.magnitude));
+            targetCamera.shake(math.remap(1, 20, 0, 1, impactVelocity.magnitude));
         }
     }
 }

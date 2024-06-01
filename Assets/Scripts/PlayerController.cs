@@ -11,9 +11,11 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using TMPro;
+using EasyButtons;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] AudioManager audioManager;
     [SerializeField] Animator animator;
     [SerializeField] int playerID;
     [SerializeField] Transform transforEnemy;
@@ -44,7 +46,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] CardsManager cardsManager;
 
-    List<string> usedCards;
+    public List<string> usedCards;
     public float score;
     public bool ready;
 
@@ -69,9 +71,10 @@ public class PlayerController : MonoBehaviour
             rect.anchoredPosition = new Vector2((enduranceImageParent.sizeDelta.x/enduranceMaxValue) * i,0); 
             // rect.sizeDelta = new Vector2(rect.sizeDelta.x, enduranceImageParent.sizeDelta.y);
         }
-        if (playerID == 2){
+        /*if (playerID == 2){
             score += 600;
-        }
+            scoreTXT.text = score.ToString();
+        }*/
     }
 
 
@@ -142,6 +145,11 @@ public class PlayerController : MonoBehaviour
         {
             if (receivedMessage != null)
             {
+                if(receivedMessage == "0xA30x6A0x760x35")
+                {
+                    gameController.restart();
+                }
+
                 playCard(receivedMessage);              
 
                 receivedMessage = null;
@@ -154,6 +162,7 @@ public class PlayerController : MonoBehaviour
     }
     
     public void addScore(){
+        audioManager.createFX(gameObject.transform.position, "groan");
         score += scoreToAdd;
         scoreTXT.text = score.ToString();
     }
@@ -272,7 +281,20 @@ public class PlayerController : MonoBehaviour
                     scoreToAdd = 600;
                 }
             }
+
+
+            usedCards.Add(cardId);
         }
+    }
+
+    [Button]
+    void salu()
+    {
+        animator.SetTrigger("Salu");
+        endurance -= 5;
+        scoreToAdd = 0;
+        ready = true;
+        gameController.play();
     }
 
     void updateEnduranceUI(){
@@ -285,7 +307,6 @@ public class PlayerController : MonoBehaviour
 
     public void enableLookAt(){
         lookAtEnemey = true;
-        scoreToAdd = 0;
     }
 
     private void ReadSerial()
@@ -345,4 +366,16 @@ public class PlayerController : MonoBehaviour
     {
 /*        GameController*/
     }
+
+
+    void kick()
+    {
+        audioManager.createFX(gameObject.transform.position, "kick");
+    }
+    void footTouched()
+    {
+        audioManager.createFX(gameObject.transform.position, "step");
+    }
+
+    
 }
