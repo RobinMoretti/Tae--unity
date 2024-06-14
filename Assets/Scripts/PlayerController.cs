@@ -60,13 +60,11 @@ public class PlayerController : MonoBehaviour
 
         OpenSerialPort();
         enduranceImageParentWidth = enduranceImageParent.sizeDelta.x;
-
-        Debug.Log("enduranceMaxValue = " + enduranceMaxValue );
         
         for (int i = 1; i < enduranceMaxValue; i++)
         {
             GameObject step = Instantiate(enduranceUIStep);
-            step.transform.parent = enduranceImageParent.transform;
+            step.transform.SetParent(enduranceImageParent.transform);
             RectTransform rect = step.GetComponent<RectTransform>();
             rect.anchoredPosition = new Vector2((enduranceImageParent.sizeDelta.x/enduranceMaxValue) * i,0); 
             // rect.sizeDelta = new Vector2(rect.sizeDelta.x, enduranceImageParent.sizeDelta.y);
@@ -144,8 +142,9 @@ public class PlayerController : MonoBehaviour
         lock (lockObject)
         {
             if (receivedMessage != null)
-            {
-                if(receivedMessage == "0xA30x6A0x760x35")
+            {   
+                
+                if(receivedMessage == "0xa30x6a0x760x35")
                 {
                     gameController.restart();
                 }
@@ -167,12 +166,18 @@ public class PlayerController : MonoBehaviour
         scoreTXT.text = score.ToString();
     }
 
+    public void resetScore(){
+        score = 0;
+        scoreTXT.text = score.ToString();
+    }
+
     void OnCollisionEnter(Collision other){
         print("other.name : " + other.gameObject.name);
     }
 
     void playCard(string cardId){
         string action = cardsManager.getCardAction(cardId);
+        Debug.Log("action = " + action );
 
         if (usedCards.Contains(cardId))
         {
@@ -207,6 +212,7 @@ public class PlayerController : MonoBehaviour
                     animator.SetTrigger(action);
                     endurance -= 2;
                     scoreToAdd = 0;
+                    usedCards.Add(cardId);
                 }
             }
             if (action == "JumpRight")
@@ -216,6 +222,7 @@ public class PlayerController : MonoBehaviour
                     animator.SetTrigger(action);
                     endurance -= 2;
                     scoreToAdd = 0;
+                    usedCards.Add(cardId);
                 }
             }
             if (action == "JumpFront")
@@ -225,6 +232,7 @@ public class PlayerController : MonoBehaviour
                     animator.SetTrigger(action);
                     endurance -= 2;
                     scoreToAdd = 0;
+                    usedCards.Add(cardId);
                 }
             }
             if (action == "JumpBack")
@@ -234,6 +242,7 @@ public class PlayerController : MonoBehaviour
                     animator.SetTrigger(action);
                     endurance -= 2;
                     scoreToAdd = 0;
+                    usedCards.Add(cardId);
                 }
             }
             if (action == "FrontKick")
@@ -243,6 +252,7 @@ public class PlayerController : MonoBehaviour
                     animator.SetTrigger(action);
                     endurance -= 3;
                     scoreToAdd = 400;
+                    usedCards.Add(cardId);
                 }
             }
             if (action == "SideKick")
@@ -252,6 +262,7 @@ public class PlayerController : MonoBehaviour
                     animator.SetTrigger(action);
                     endurance -= 3;
                     scoreToAdd = 400;
+                    usedCards.Add(cardId);
                 }
             }
             if (action == "Combo1")
@@ -261,6 +272,7 @@ public class PlayerController : MonoBehaviour
                     animator.SetTrigger(action);
                     endurance -= 5;
                     scoreToAdd = 600;
+                    usedCards.Add(cardId);
                 }
             }
             if (action == "RunAndKick")
@@ -270,6 +282,7 @@ public class PlayerController : MonoBehaviour
                     animator.SetTrigger(action);
                     endurance -= 5;
                     scoreToAdd = 1000;
+                    usedCards.Add(cardId);
                 }
             }
             if (action == "BackKick")
@@ -279,11 +292,9 @@ public class PlayerController : MonoBehaviour
                     animator.SetTrigger(action);
                     endurance -= 3;
                     scoreToAdd = 600;
+                    usedCards.Add(cardId);
                 }
             }
-
-
-            usedCards.Add(cardId);
         }
     }
 
@@ -316,6 +327,7 @@ public class PlayerController : MonoBehaviour
             try
             {
                 string message = serialPort.ReadLine();
+
                 lock (lockObject)
                 {
                     receivedMessage = message;
@@ -325,6 +337,7 @@ public class PlayerController : MonoBehaviour
             {
                 Debug.LogError("Error reading from serial port: " + e.Message);
             }
+            // Thread.Sleep(100);
         }
     }
 
@@ -342,6 +355,9 @@ public class PlayerController : MonoBehaviour
         try
         {
             serialPort = new SerialPort(portName, baudRate);
+            serialPort.RtsEnable = true;
+            serialPort.DtrEnable = true;
+            // serialPort.ReadTimeout = 1000;
             serialPort.Open();
             isRunning = true;
             serialThread = new Thread(ReadSerial);
@@ -352,6 +368,7 @@ public class PlayerController : MonoBehaviour
             print("Error opening serial port: " + e.Message);
         }
     }
+
 /*
     public void pauseAnimation()
     {

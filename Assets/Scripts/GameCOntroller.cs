@@ -46,8 +46,8 @@ public class GameController : MonoBehaviour
         player1.usedCards.Clear();
         player2.usedCards.Clear();
 
-        timer = 60;
-        timerTxt.text = "60";
+        timer = 120;
+        timerTxt.text = "120";
         gameStarted = false;
         finished = false;
 
@@ -73,11 +73,11 @@ public class GameController : MonoBehaviour
     public void play(){
         if(player1.ready && player2.ready){
             // reset score and laaunch timer
-            player1.score = 0;
-            player2.score = 0;
+            player1.resetScore();
+            player2.resetScore();
             
             timer = 0;
-            timerTxt.text = (60 - Math.Round(timer)).ToString();
+            timerTxt.text = (120 - Math.Round(timer)).ToString();
 
             fightGO.SetActive(true);
             fightGO2.SetActive(true);
@@ -95,9 +95,9 @@ public class GameController : MonoBehaviour
     void Update(){
         if(gameStarted && !finished){
             timer += Time.deltaTime;
-            timerTxt.text = (60 - Math.Round(timer)).ToString();
+            timerTxt.text = (120 - Math.Round(timer)).ToString();
 
-            if(timer >= 60){
+            if(timer >= 120){
                 // end game
                 finished = true;
 
